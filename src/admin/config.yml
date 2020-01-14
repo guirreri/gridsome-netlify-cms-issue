@@ -6,12 +6,31 @@ media_folder: "static/uploads"
 public_folder: "/uploads"
 
 collections:
+  - label: "Blogs"
+    name: "blogs"
+    folder: "blogs"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Excerpt", name: "excerpt", widget: "string"}
+      - {label: "Publish Date", name: "date", widget: "date"}
   - label: "Posts"
     name: "posts"
     folder: "posts"
     create: true
     slug: "{{year}}-{{month}}-{{day}}_{{slug}}"
     fields:
+      - {
+        label: "Blog",
+        name: "blogs",
+        widget: "relation",
+        collection: "blogs",
+        displayFields: ["title"],
+        searchFields: ["title"],
+        valueField: "title",
+        multiple: true
+      }
       - {label: "Title", name: "title", widget: "string"}
       - {label: "Excerpt", name: "excerpt", widget: "string"}
       - {label: "Publish Date", name: "date", widget: "date"}
@@ -21,4 +40,4 @@ collections:
       # In this case, Blogs can not have any custom properties and do not have
       # dedicated markdown files.
       # Also, if a blog is not typed out just right, a new one will be created.
-      - {label: "Blogs", name: "blogs", widget: "list"}
+      # - {label: "Blogs", name: "blogs", widget: "list"}
