@@ -1,0 +1,24 @@
+backend:
+  name: github
+  repo: guirreri/gridsome-netlify-cms-issue
+
+media_folder: "static/uploads"
+public_folder: "/uploads"
+
+collections:
+  - label: "Posts"
+    name: "posts"
+    folder: "posts"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}_{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Excerpt", name: "excerpt", widget: "string"}
+      - {label: "Publish Date", name: "date", widget: "date"}
+      - {label: "Body", name: "body", widget: "markdown"}
+      # Using a "list" widget works, but is not ideal! Would prefer relation
+      # widget referring to a separate "blogs" collection.
+      # In this case, Blogs can not have any custom properties and do not have
+      # dedicated markdown files.
+      # Also, if a blog is not typed out just right, a new one will be created.
+      - {label: "Blogs", name: "blogs", widget: "list"}
