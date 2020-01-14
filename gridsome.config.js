@@ -16,7 +16,8 @@ module.exports = {
 
   // Routes
   templates: {
-    Post: '/blog/:year/:month/:day/:title'
+    Post: '/blog/:year/:month/:day/:title',
+    Blog: '/blog/:title'
   },
 
   plugins: [
@@ -31,7 +32,6 @@ module.exports = {
         refs: {
           blogs: {
             typeName: 'Blog',
-            route: '/blog/:id',
             create: true
           }
         },
