@@ -1,7 +1,7 @@
 <template>
   <Layout>
     <header>
-      <h2>(id: {{ blog.id }})</h2>
+      <h2>{{ blog.title }} (id: {{ blog.id }})</h2>
       <!-- <time>{{ blog.date }}</time> -->
       <!-- <p>{{ blog.excerpt }}</p> -->
     </header>
@@ -16,6 +16,8 @@
 query Blog ($id: ID!) {
   blog (id: $id) {
     id
+    title
+    excerpt
     belongsTo {
       edges {
         node {
