@@ -15,9 +15,10 @@ module.exports = {
   },
 
   // Routes
+  // TODO: Figure out a way to maybe make a post dynamically be under something like "/:blog-title"
   templates: {
-    Post: '/blog/:year/:month/:day/:title',
-    Blog: '/blog/:title'
+    Post: '/:year/:month/:day/:title',
+    Blog: '/:title'
   },
 
   plugins: [
