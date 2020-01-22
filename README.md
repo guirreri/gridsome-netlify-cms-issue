@@ -21,7 +21,7 @@ Create a Gridsome + Netlify CMS website that allows for multiple, CMS-created Bl
 
 ## Issues
 
-Netlify CMS' relation widget appears to be the only way to create a one-or-more list of pre-defined items. However, when using the relation widget, there does not appear to be a way to properly reference the Post with one or more of the dynamically created Blogs.
+Netlify CMS' relation widget appears to be the only way to create a one-or-more list of pre-defined items. While I can now properly reference a Post with one or more of the dynamically created Blogs, a Blog can not have any properties other than `id` and `title`.
 
 ## Setup (Default starter for Gridsome)
 
