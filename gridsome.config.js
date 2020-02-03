@@ -25,6 +25,21 @@ module.exports = {
     {
       use: '@gridsome/source-filesystem',
       options: {
+        path: 'blogs/**/*.md',
+        typeName: 'Blog',
+        remark: {
+          plugins: []
+        },
+        refs: {
+          posts: {
+            typeName: 'Post',
+          }
+        },
+      }
+    },
+    {
+      use: '@gridsome/source-filesystem',
+      options: {
         path: 'posts/**/*.md',
         typeName: 'Post',
         remark: {
@@ -33,7 +48,6 @@ module.exports = {
         refs: {
           blogs: {
             typeName: 'Blog',
-            create: true
           }
         },
       }

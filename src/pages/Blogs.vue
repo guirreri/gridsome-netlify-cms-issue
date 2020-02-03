@@ -6,7 +6,7 @@
     <article>
       <header>
         <h2 v-for="(blog, index) in blogs" :key="`blog-${index}`">
-          <g-link :to="blog.node.path">{{blog.node.id}}</g-link>
+          <g-link :to="blog.node.path">{{blog.node.title}} {{blog.node.id}}</g-link>
         </h2>
       </header>
       <footer>Blog Footer</footer>
@@ -23,6 +23,7 @@ query Blogs {
       node {
         id
         path
+        title
       }
     }
   }

@@ -2,9 +2,10 @@
   <Layout>
     <header>
       <h2>{{ blog.title }} (id: {{ blog.id }})</h2>
-      <!-- <time>{{ blog.date }}</time> -->
-      <!-- <p>{{ blog.excerpt }}</p> -->
+      <p>{{ blog.excerpt }}</p>
     </header>
+
+    <!-- Does not return any posts because `belongsTo` is returning an empty array -->
     <article v-for="post in posts" :key="`post-${post.id}`">
       <g-link :to="post.path"><h3>{{post.title}}</h3></g-link>
     </article>
