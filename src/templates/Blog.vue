@@ -22,7 +22,7 @@ query Blog ($id: ID!) {
     belongsTo {
       edges {
         node {
-          ...on Post {
+          ... on Post {
             id
             title
             path

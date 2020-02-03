@@ -3,19 +3,26 @@
     <header>
       <h2>Blogs</h2>
     </header>
-    <article>
+    <section>
       <header>
         <h2 v-for="(blog, index) in blogs" :key="`blog-${index}`">
           <g-link :to="blog.node.path">{{blog.node.title}} {{blog.node.id}}</g-link>
         </h2>
       </header>
-      <footer>Blog Footer</footer>
-    </article>
+    </section>
+    <section>
+      <header>
+        <h2>Posts</h2>
+      </header>
+      <p v-for="(post, index) in posts" :key="`post-${index}`">
+        <g-link :to="post.node.path">{{post.node.title}} {{post.node.id}}</g-link>
+      </p>
+    </section>
   </Layout>
 </template>
 
 <page-query>
-query Blogs {
+query AllBlogsAndPosts {
   blogs: allBlog (
     sortBy: "date", order: DESC
   ) {
@@ -24,6 +31,35 @@ query Blogs {
         id
         path
         title
+        belongsTo {
+          edges {
+            node {
+              ... on Post {
+                id
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  posts: allPost (
+    sortBy: "date", order: DESC
+  ) {
+    edges {
+      node {
+        id
+        path
+        title
+        belongsTo {
+          edges {
+            node {
+              ... on Blog {
+                id
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -35,6 +71,9 @@ export default {
   computed: {
     blogs() {
      return this.$page.blogs.edges
+    },
+    posts() {
+     return this.$page.posts.edges
     }
   }
 }
