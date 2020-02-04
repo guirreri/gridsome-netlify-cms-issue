@@ -40,6 +40,8 @@ query AllBlogsAndPosts {
     edges {
       node {
         id
+        path
+        title
       }
     }
   }

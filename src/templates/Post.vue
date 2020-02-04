@@ -7,7 +7,7 @@
         <p>{{ post.excerpt }}</p>
       </header>
       <section v-html="post.content"/>
-      <h3>Other blogs with this post...</h3>
+      <h3>All blogs with this post...</h3>
       <p v-for="blog in blogs" :key="`post-${blog.id}`">
         <g-link :to="blog.path">{{blog.title}}</g-link>
       </p>
