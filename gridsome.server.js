@@ -6,11 +6,43 @@
 // To restart press CTRL + C in terminal and run `gridsome develop`
 
 module.exports = function (api) {
-  api.loadSource(({ addCollection }) => {
-    // Use the Data Store API here: https://gridsome.org/docs/data-store-api/
+  const blogsByTitle = {}
+  const postsByBlogs = {}
+
+  // Collect many-to-many relationships as nodes are created
+  api.onCreateNode(options => {
+    if (options.internal.typeName === 'Blog') {
+      blogsByTitle[options.title] = {
+        id: options.id,
+        uuid: options.$uid,
+        title: options.title
+      }
+    }
+    if (options.internal.typeName === 'Post') {
+      options.blogs.forEach(blog => {
+        postsByBlogs[blog] = postsByBlogs[blog] || []
+        postsByBlogs[blog].push(options)
+      })
+    }
   })
 
-  api.createPages(({ createPage }) => {
-    // Use the Pages API here: https://gridsome.org/docs/pages-api/
+  // Manually setup many-to-many references between Blogs and Posts
+  // Netlify CMS uses "title" as an ID when using the Netlify CMS relation widget.
+  // When using the `ref` key to set up references in grifsome.confg.js, an ID 
+  //  is required but not provided by the Netlify CMS-created markdown.
+  // This is an open Netlify CMS bug.
+  //    https://github.com/netlify/netlify-cms/issues/2063
+  //    https://github.com/netlify/netlify-cms/issues/1063
+  api.loadSource(({ getCollection }) => {
+    const blogsCollection = getCollection('Blog')
+
+    for (blogsArray in postsByBlogs) {
+      const posts = postsByBlogs[blogsArray]
+      const blogTitle = posts[0].blogs[0]
+      const blog = blogsByTitle[blogTitle]
+      const node = blogsCollection.getNodeById(blog.id)
+      console.log(posts)
+      node.posts = posts
+    }
   })
 }
