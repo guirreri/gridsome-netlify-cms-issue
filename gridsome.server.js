@@ -8,20 +8,18 @@
 module.exports = function (api) {
   const blogsByTitle = {}
   const postsByBlogs = {}
+  const allPosts = []
 
   // Collect many-to-many relationships as nodes are created
-  api.onCreateNode(options => {
-    if (options.internal.typeName === 'Blog') {
-      blogsByTitle[options.title] = {
-        id: options.id,
-        uuid: options.$uid,
-        title: options.title
-      }
+  api.onCreateNode(node => {
+    if (node.internal.typeName === 'Blog') {
+      blogsByTitle[node.title] = node
     }
-    if (options.internal.typeName === 'Post') {
-      options.blogs.forEach(blog => {
+    if (node.internal.typeName === 'Post') {
+      allPosts.push(node)
+      node.blogs.forEach(blog => {
         postsByBlogs[blog] = postsByBlogs[blog] || []
-        postsByBlogs[blog].push(options)
+        postsByBlogs[blog].push(node)
       })
     }
   })
@@ -35,14 +33,30 @@ module.exports = function (api) {
   //    https://github.com/netlify/netlify-cms/issues/1063
   api.loadSource(({ getCollection }) => {
     const blogsCollection = getCollection('Blog')
+    const postsCollection = getCollection('Post')
 
     for (blogsArray in postsByBlogs) {
       const posts = postsByBlogs[blogsArray]
       const blogTitle = posts[0].blogs[0]
       const blog = blogsByTitle[blogTitle]
       const node = blogsCollection.getNodeById(blog.id)
-      console.log(posts)
       node.posts = posts
     }
+
+    allPosts.forEach((post, index, array) => {
+      const blogs = []
+      post.blogs.map(blogTitle => {
+        const blog = blogsByTitle[blogTitle]
+        // TODO: Investigate here why pushing the entire blog object breaks the 
+        //  build with a maximum stack error
+        blogs.push({
+          id: blog.id,
+          path: blog.path,
+          title: blog.title
+        })
+      })
+      const node = postsCollection.getNodeById(post.id)
+      node.blogs = blogs
+    })
   })
 }

@@ -24,6 +24,11 @@ query Post ($path: String!) {
     excerpt
     content
     date (format: "D MMMM YYYY")
+    blogs {
+      id
+      title
+      path
+    }
   }
 }
 </page-query>
