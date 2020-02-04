@@ -8,8 +8,8 @@
       </header>
       <section v-html="post.content"/>
       <h3>Other blogs with this post...</h3>
-      <p v-for="post in posts" :key="`post-${post.id}`">
-        <g-link :to="post.path">{{post.title}}</g-link>
+      <p v-for="blog in blogs" :key="`post-${blog.id}`">
+        <g-link :to="blog.path">{{blog.title}}</g-link>
       </p>
       <footer>Post Footer</footer>
     </article>
@@ -24,18 +24,6 @@ query Post ($path: String!) {
     excerpt
     content
     date (format: "D MMMM YYYY")
-    belongsTo {
-      edges {
-        node {
-          ... on Blog {
-            id
-            title
-            path
-            content
-          }
-        }
-      }
-    }
   }
 }
 </page-query>
@@ -47,7 +35,8 @@ export default {
      return this.$page.post 
     },
     blogs() {
-     return this.$page.post.belongsTo.edges.map(edge => edge.node)
+     return this.$page.post.blogs
+    //  return this.$page.post.belongsTo.edges.map(edge => edge.node)
     }
   }
 }

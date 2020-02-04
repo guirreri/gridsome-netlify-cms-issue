@@ -30,11 +30,12 @@ module.exports = {
         remark: {
           plugins: []
         },
-        refs: {
-          posts: {
-            typeName: 'Post',
-          }
-        },
+        // Not needed because this reference is created via gridsome.server.js
+        // refs: {
+        //   posts: {
+        //     typeName: 'Post',
+        //   }
+        // },
       }
     },
     {
@@ -45,11 +46,13 @@ module.exports = {
         remark: {
           plugins: []
         },
-        refs: {
-          blogs: {
-            typeName: 'Blog',
-          }
-        },
+        // Not needed because this reference is created via gridsome.server.js
+        // refs: {
+        //   blogs: {
+        //     typeName: 'Blog',
+        //     // create: true
+        //   }
+        // },
       }
     },
     {

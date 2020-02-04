@@ -7,7 +7,7 @@
 
     <!-- Does not return any posts because `belongsTo` is returning an empty array -->
     <article v-for="post in posts" :key="`post-${post.id}`">
-      <g-link :to="post.path"><h3>{{post.title}}</h3></g-link>
+      <g-link :to="post.path"><h3>{{post.title}} ({{post.id}})</h3></g-link>
     </article>
     <footer>Blog Footer</footer>
   </Layout>
@@ -18,18 +18,11 @@ query Blog ($id: ID!) {
   blog (id: $id) {
     id
     title
-    excerpt
-    belongsTo {
-      edges {
-        node {
-          ... on Post {
-            id
-            title
-            path
-            content
-          }
-        }
-      }
+    path
+    posts {
+      id
+      title
+      path
     }
   }
 }
@@ -47,7 +40,8 @@ export default {
      return this.$page.blog
     },
     posts() {
-     return this.$page.blog.belongsTo.edges.map(edge => edge.node)
+     return this.$page.blog.posts
+    //  return this.$page.blog.belongsTo.edges.map(edge => edge.node)
     }
   }
 }
