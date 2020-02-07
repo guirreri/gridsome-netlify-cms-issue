@@ -10,20 +10,6 @@ module.exports = function (api) {
   const postsByBlogs = {}
   const allPosts = []
 
-  // Collect many-to-many relationships as nodes are created
-  api.onCreateNode(node => {
-    if (node.internal.typeName === 'Blog') {
-      blogsByTitle[node.title] = node
-    }
-    if (node.internal.typeName === 'Post') {
-      allPosts.push(node)
-      node.blogs.forEach(blog => {
-        postsByBlogs[blog] = postsByBlogs[blog] || []
-        postsByBlogs[blog].push(node)
-      })
-    }
-  })
-
   // Manually setup many-to-many references between Blogs and Posts
   // Netlify CMS uses "title" as an ID when using the Netlify CMS relation widget.
   // When using the `ref` key to set up references in grifsome.confg.js, an ID 
@@ -31,9 +17,25 @@ module.exports = function (api) {
   // This is an open Netlify CMS bug.
   //    https://github.com/netlify/netlify-cms/issues/2063
   //    https://github.com/netlify/netlify-cms/issues/1063
-  api.loadSource(({ getCollection }) => {
+  api.loadSource(({ getCollection, store }) => {
     const blogsCollection = getCollection('Blog')
     const postsCollection = getCollection('Post')
+
+    // Collect many-to-many relationships as nodes are created
+    blogsCollection.data().forEach(blog => {
+      if (blog.internal.typeName === 'Blog') {
+        blogsByTitle[blog.title] = blog
+      }
+    })
+    postsCollection.data().forEach(post => {
+      if (post.internal.typeName === 'Post') {
+        allPosts.push(post)
+        post.blogs.forEach(blog => {
+          postsByBlogs[blog] = postsByBlogs[blog] || []
+          postsByBlogs[blog].push(post)
+        })
+      }
+    })
 
     for (blogsArray in postsByBlogs) {
       const posts = postsByBlogs[blogsArray]
