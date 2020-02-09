@@ -29,6 +29,17 @@ query Post ($path: String!) {
       title
       path
     }
+    belongsTo {
+      edges {
+        node {
+          ... on Blog {
+            id
+            title
+            path
+          }
+        }
+      }
+    }
   }
 }
 </page-query>
@@ -40,8 +51,8 @@ export default {
      return this.$page.post 
     },
     blogs() {
-     return this.$page.post.blogs
-    //  return this.$page.post.belongsTo.edges.map(edge => edge.node)
+    //  return this.$page.post.blogs
+     return this.$page.post.belongsTo.edges.map(edge => edge.node)
     }
   }
 }

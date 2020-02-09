@@ -19,10 +19,17 @@ query Blog ($id: ID!) {
     id
     title
     path
-    posts {
-      id
-      title
-      path
+    belongsTo {
+      edges {
+        node {
+          ... on Post {
+            id
+            path
+            title
+            excerpt
+          }
+        }
+      }
     }
   }
 }
@@ -40,8 +47,8 @@ export default {
      return this.$page.blog
     },
     posts() {
-     return this.$page.blog.posts
-    //  return this.$page.blog.belongsTo.edges.map(edge => edge.node)
+    //  return this.$page.blog.posts
+     return this.$page.blog.belongsTo.edges.map(edge => edge.node)
     }
   }
 }
