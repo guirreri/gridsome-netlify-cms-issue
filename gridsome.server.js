@@ -23,20 +23,19 @@ module.exports = function (api) {
 
     // Collect many-to-many relationships as nodes are created
     blogsCollection.data().forEach(blog => {
-      if (blog.internal.typeName === 'Blog') {
         blogsByTitle[blog.title] = blog
-      }
     })
     postsCollection.data().forEach(post => {
-      if (post.internal.typeName === 'Post') {
         allPosts.push(post)
         post.blogs.forEach(blog => {
           postsByBlogs[blog] = postsByBlogs[blog] || []
           postsByBlogs[blog].push(post)
         })
-      }
     })
 
+    // Netlify CMS does not create an ID when using the relation widget
+    // For each blog, replace the blog title with a uniuqe ID
+    // An id field is required in order for belongsTo to exist in Graph QL
     for (blogsArray in postsByBlogs) {
       const posts = postsByBlogs[blogsArray]
       const blogTitle = posts[0].blogs[0]
@@ -45,6 +44,7 @@ module.exports = function (api) {
       node.posts = posts
     }
 
+    // For each post, replace the blog title with the blog's unique ID
     allPosts.forEach((post, index, array) => {
       const blogs = []
       post.blogs.map(blogTitle => {
