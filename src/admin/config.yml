@@ -1,6 +1,7 @@
 backend:
   name: github
   repo: guirreri/gridsome-netlify-cms-issue
+  branch: many-to-many-relationship-hack
 
 media_folder: "static/uploads"
 public_folder: "/uploads"
@@ -12,6 +13,7 @@ collections:
     create: true
     slug: "{{slug}}"
     fields:
+      - { name: "ID", label: "id", widget: "id" }
       - {label: "Title", name: "title", widget: "string"}
       - {label: "Excerpt", name: "excerpt", widget: "string"}
       - {label: "Publish Date", name: "date", widget: "date"}

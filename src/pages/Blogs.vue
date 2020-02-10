@@ -1,7 +1,7 @@
 <template>
   <Layout>
     <header>
-      <h2>Blogs</h2>
+      <h2>All Blogs</h2>
     </header>
     <section>
       <header>
@@ -12,7 +12,7 @@
     </section>
     <section>
       <header>
-        <h2>Posts</h2>
+        <h2>All Posts</h2>
       </header>
       <p v-for="(post, index) in posts" :key="`post-${index}`">
         <g-link :to="post.node.path">{{post.node.title}} {{post.node.id}}</g-link>
@@ -31,15 +31,6 @@ query AllBlogsAndPosts {
         id
         path
         title
-        belongsTo {
-          edges {
-            node {
-              ... on Post {
-                id
-              }
-            }
-          }
-        }
       }
     }
   },
@@ -51,15 +42,6 @@ query AllBlogsAndPosts {
         id
         path
         title
-        belongsTo {
-          edges {
-            node {
-              ... on Blog {
-                id
-              }
-            }
-          }
-        }
       }
     }
   }
